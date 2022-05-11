@@ -8,6 +8,10 @@ const conn = require("./database/conn");
 //app iniciliazation
 const app = express();
 
+//body config
+app.use(express.json());
+app.use(express.urlencoded());
+
 //cors
 app.use(cors({ credentials: true, origin: 'http://localhost:3000'}));
 
