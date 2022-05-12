@@ -3,31 +3,39 @@ const express = require("express");
 const cors = require("cors");
 
 //database import
-const conn = require("./database/conn");
+const mysql = require("./database/mysql");
+const postgre = require("./database/mysql");
 
 //app iniciliazation
 const app = express();
 
 //body config
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 //cors
-app.use(cors({ credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 //configuration body
 app.use(express.json());
 
 //routes import
 const productRoutes = require("./routes/productsRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const stockRoutes = require("./routes/stockRoutes");
 
 //use routes
-app.use("/", productRoutes);
+app.use("/produtos", productRoutes);
+app.use("/categorias", categoryRoutes);
+app.use("/categorias", stockRoutes);
 
-//database inicialization
-conn
+mysql
+  //mysql inicialization
   .sync()
-  //app listening at port 3000
   .then(() => {
-    app.listen(3000);
+    //postgre inicialization
+    postgre.sync(() => {
+      //postgre listening at port 3000
+      app.listen(3000);
+    });
   });
