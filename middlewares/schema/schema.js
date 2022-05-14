@@ -1,10 +1,15 @@
 const Joi = require("joi");
 const params = require("../../helpers/params-schema");
-module.exports = (param) => {
+module.exports = (param, unknown) => {
   return (req, res, next) => {
+
+    //verify if nknown exists
+    if(!unknown)
+      unknown = true;
+
     // schema options
     const options = {
-      allowUnknown: true,
+      allowUnknown: unknown,
       stripUnknow: true,
     };
 
