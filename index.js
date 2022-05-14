@@ -1,13 +1,28 @@
 //external imports
 const express = require("express");
 const cors = require("cors");
+var cron = require("node-cron");
 
 //database import
 const mysql = require("./database/mysql");
-const postgre = require("./database/mysql");
+const postgre = require("./database/postgresql");
 
 //app iniciliazation
 const app = express();
+
+//schedule save data at 02:00 UTC+3
+cron.schedule("5 * * * *",
+  () => {
+    exec("node config.js", (error) => {
+      if (error) return console.error(`error: ${error.message}`);
+      else console.log("Salvando dados Mysql para Postgresql");
+    });
+  },
+  {
+    scheduled: true,
+    timezone: "America/Sao_Paulo",
+  }
+);
 
 //body config
 app.use(express.json());
@@ -34,7 +49,7 @@ mysql
   .sync()
   .then(() => {
     //postgre inicialization
-    postgre.sync(() => {
+    postgre.sync().then(() => {
       //postgre listening at port 3000
       app.listen(3000);
     });
