@@ -1,12 +1,14 @@
 const express = require("express");
 const Router = express.Router();
 //controller
-const productRoutes = require("../controllers/ProductController");
+const ProductController = require("../controllers/ProductController");
 //midllewares
-const checkBody = require("../middlewares/checkBody");
+const schema = require('../middlewares/schema/schema')
 
-Router.get("/", productRoutes.index);
-Router.get("/:id", productRoutes.show);
-Router.post("/",(req,res,next)=>{checkBody(req,res,next,['name'])}, productRoutes.store);
+Router.get("/", ProductController.index);
+Router.get("/:id", ProductController.show);
+Router.post("/", schema('product', false), schema('productStore'), ProductController.store);
+Router.patch("/:id", schema('product'), ProductController.update);
+Router.delete("/:id", ProductController.destroy);
 
 module.exports = Router;
