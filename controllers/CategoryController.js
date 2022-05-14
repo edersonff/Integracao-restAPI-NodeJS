@@ -1,4 +1,4 @@
-const Category = require("../models/Category");
+const Category = require("../models/Category").CategoryMysql;
 
 module.exports = class categoryRoutes {
   static async index(req, res) {

@@ -1,24 +1,31 @@
-const { DataTypes } = require("sequelize/types");
-const db = require("../database/conn");
+const { DataTypes, Sequelize } = require("sequelize");
+const mysql = require("../database/mysql");
+const postgre = require("../database/postgresql");
 
-const Category = require("./Category");
-
-const Product = db.define("Stock", {
+const stockConfig = {
   quantity: {
     type: DataTypes.INTEGER,
-    allowNull: false
   },
   reserved: {
     type: DataTypes.INTEGER,
-    allowNull: false
   },
   status: {
-    type: DataTypes.TINYINT(1),
+    type: DataTypes.SMALLINT,
     defaultValue: 1,
   },
-});
+};
 
-Product.hasOne(Category);
-Category.hasMany(Product);
+const postgresConfig = {
+  ProductId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Products',
+      key: 'id'
+    }
+  }
+}
 
-module.exports = Product;
+const StockMysql = mysql.define("Stock", stockConfig);
+const StockPostgresql = postgre.define("Stock", Object.assign(stockConfig, postgresConfig));
+
+module.exports = {StockMysql, StockPostgresql};

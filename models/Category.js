@@ -1,7 +1,8 @@
-const { DataTypes } = require("sequelize/types");
-const db = require("../database/conn");
+const { DataTypes } = require("sequelize");
+const mysql = require("../database/mysql");
+const postgre = require("../database/postgresql");
 
-const Product = db.define("Category", {
+const categoryConfig = {
   code: {
     type: DataTypes.STRING(15),
     allowNull: false
@@ -11,9 +12,12 @@ const Product = db.define("Category", {
     allowNull: false
   },
   status: {
-    type: DataTypes.TINYINT(1),
+    type: DataTypes.SMALLINT,
     defaultValue: 1,
   },
-});
+}
 
-module.exports = Product;
+const CategoryMysql = mysql.define("Category", categoryConfig);
+const CategoryPostgresql = postgre.define("Category", categoryConfig);
+
+module.exports = {CategoryMysql, CategoryPostgresql};

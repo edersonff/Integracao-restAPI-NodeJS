@@ -1,7 +1,9 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/conn");
+const mysql = require("../database/mysql");
+const postgre = require("../database/postgresql");
+const Stock = require("./Stock").StockMysql;
 
-const Product = db.define("Product", {
+const productConfig = {
   code: {
     type: DataTypes.CHAR(12), // example: XXX-YY-ZZ-AA-BB => XXXXYYZZAABB
     allowNull: false
@@ -14,13 +16,29 @@ const Product = db.define("Product", {
     type: DataTypes.TEXT,
   },
   value: {
-    type: DataTypes.FLOAT(6, 2),
+    type: DataTypes.DECIMAL(6, 2),
     allowNull: false
   },
   status: {
-    type: DataTypes.TINYINT(1),
+    type: DataTypes.SMALLINT,
     defaultValue: 1,
   },
-});
+}
 
-module.exports = Product;
+const options = {
+    hooks: {
+      afterFind: async (query)=>{
+        const postgreProduct = await ProductPostgresql.findAll();
+        console.log(postgreProduct);
+        query.concat(postgreProduct);
+      }
+    }
+}
+
+const ProductPostgresql = postgre.define("Product", productConfig);
+const ProductMysql = mysql.define("Product", productConfig, options);
+
+ProductMysql.hasOne(Stock, {onDelete:'CASCADE'});
+ProductPostgresql.hasOne(Stock, {onDelete:'CASCADE'});
+
+module.exports = {ProductMysql, ProductPostgresql};

@@ -1,11 +1,11 @@
-const Product = require("../models/Product");
-const Stock = require("../models/Stock");
+const Product = require("../models/Product").ProductMysql;
+const Stock = require("../models/Stock").StockMysql;
 
 module.exports = class productRoutes {
   static async index(req, res) {
     try {
       // get all products
-      const products = await Product.findAll();
+      const products = await Product.findAll()
 
       // verify if product exists
       if(!products){

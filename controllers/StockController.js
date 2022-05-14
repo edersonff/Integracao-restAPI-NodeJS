@@ -1,5 +1,5 @@
-const Product = require("../models/Product");
-const Stock = require("../models/Stock");
+const Product = require("../models/Product").ProductMysql;
+const Stock = require("../models/Stock").StockMysql;
 
 module.exports = class stockRoutes {
   static async index(req, res) {
