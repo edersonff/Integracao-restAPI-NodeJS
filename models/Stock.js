@@ -1,4 +1,4 @@
-const { DataTypes, Sequelize } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const mysql = require("../database/mysql");
 const postgre = require("../database/postgresql");
 
@@ -21,7 +21,8 @@ const postgresConfig = {
     references: {
       model: 'Products',
       key: 'id'
-    }
+    },
+    onDelete: 'CASCADE'
   }
 }
 

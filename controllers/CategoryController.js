@@ -1,4 +1,7 @@
-const Category = require("../models/Category").CategoryMysql;
+const { CategoryMysql, CategoryPostgresql } = require("../models/Category");
+const integration = require("../helpers/model-integration");
+
+const Category = new integration(CategoryMysql, CategoryPostgresql);
 
 module.exports = class categoryRoutes {
   static async index(req, res) {
@@ -7,10 +10,10 @@ module.exports = class categoryRoutes {
       const categorys = await Category.findAll();
 
       // verify if category exists
-      if(!categorys){
+      if (!categorys) {
         return res.json({ msg: "Nenhuma categoria encontrada!" }).status(404);
       }
-      
+
       //send data
       res.json({ data: categorys });
       //
@@ -24,10 +27,10 @@ module.exports = class categoryRoutes {
 
     try {
       // get the category by id
-      const category = await Category.findOne({where:{id}, raw:true});
+      const category = await Category.findOne({ where: { id }, raw: true });
 
       // verify if category exists
-      if(!category){
+      if (!category) {
         return res.json({ msg: "Categoria não encontrada!" }).status(404);
       }
 
@@ -46,58 +49,54 @@ module.exports = class categoryRoutes {
 
       //send new category data
       res.json({ data: category }).status(201);
-
     } catch (err) {
       res.json({ msg: err }).status(500);
     }
   }
 
   static async update(req, res) {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
       // get category by id
-      const category = await Category.findOne({where:{id}});
+      const category = await Category.findOne({ where: { id } });
 
       // verify if category exists
-      if(!category){
+      if (!category) {
         return res.json({ msg: "Categoria não encontrada!" }).status(404);
       }
-    
+
       // get all body keys and update the category
-      Object.keys(req.body).map((key)=>{
+      Object.keys(req.body).map((key) => {
         category[key] = req.body[key];
-      })
+      });
 
       // update, save category
       await category.save();
 
       //send new category data
-      res.json({ msg: "Categoria atualizada!", data: category })
-      
+      res.json({ msg: "Categoria atualizada!", data: category });
     } catch (err) {
       res.json({ msg: err }).status(500);
     }
   }
 
-  static async destroy(req,res) {
-    const {id} = req.params;
+  static async destroy(req, res) {
+    const { id } = req.params;
     try {
       // get category by id
-      const category = await Category.findOne({where:{id}});
+      const category = await Category.findOne({ where: { id } });
 
       // verify if category exists
-      if(!category){
+      if (!category) {
         return res.json({ msg: "Categoria não encontrada!" }).status(404);
       }
 
       // delete the category
       await category.destroy();
 
-      res.json({ msg: "Categoria excluida!", data: category })
-
+      res.json({ msg: "Categoria excluida!", data: category });
     } catch (err) {
       res.json({ msg: err }).status(500);
     }
   }
-  
 };

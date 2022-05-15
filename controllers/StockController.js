@@ -1,26 +1,27 @@
-const Product = require("../models/Product").ProductMysql;
-const Stock = require("../models/Stock").StockMysql;
+const { ProductMysql, ProductPostgresql } = require("../models/Product");
+const { StockMysql, StockPostgresql } = require("../models/Stock");
+const integration = require("../helpers/model-integration");
+
+const Product = new integration(ProductMysql, ProductPostgresql);
+const Stock = new integration(StockMysql, StockPostgresql);
 
 module.exports = class stockRoutes {
   static async index(req, res) {
     const { id } = req.params;
     try {
       // get product and stock
-      const product = await Product.findOne({
-        include: [
-          {
-            model: Stock,
-            where: {
-              ProductId: id,
-            },
-          },
-        ],
+      const stock = await Stock.findOne({
+        where: { ProductId: id },
+        raw: true,
       });
+      const product = await Product.findOne({ where: { id } });
 
       // verify if stock exists
-      if (!product) {
+      if (!product || !stock) {
         return res.json({ msg: "Produto/estoque não encontrado!" }).status(404);
       }
+
+      product.dataValues.estoque = stock;
 
       //send data
       res.json({ data: product });
@@ -37,7 +38,7 @@ module.exports = class stockRoutes {
       const stock = await Stock.findOne({
         where: {
           ProductId: id,
-        }
+        },
       });
 
       // verify if stock exists
@@ -62,6 +63,8 @@ module.exports = class stockRoutes {
   }
 
   static async destroy(req, res) {
-    res.json({ msg: "Ação não pode ser feita, estoque vinculado a produto!" }).status(501);
+    res
+      .json({ msg: "Ação não pode ser feita, estoque vinculado a produto!" })
+      .status(501);
   }
 };

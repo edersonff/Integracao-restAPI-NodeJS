@@ -11,7 +11,7 @@ const postgre = require("./database/postgresql");
 const app = express();
 
 //schedule save data at 02:00 UTC+3
-cron.schedule("5 * * * *",
+cron.schedule("0 2 * * *",
   () => {
     exec("node config.js", (error) => {
       if (error) return console.error(`error: ${error.message}`);
@@ -50,7 +50,7 @@ mysql
   .then(() => {
     //postgre inicialization
     postgre.sync().then(() => {
-      //postgre listening at port 3000
+      //listening at port 3000
       app.listen(3000);
     });
   });
