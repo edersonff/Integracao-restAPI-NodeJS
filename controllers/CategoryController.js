@@ -14,9 +14,8 @@ module.exports = class categoryRoutes {
         return res.json({ msg: "Nenhuma categoria encontrada!" }).status(404);
       }
 
-      //send data
+      // send data
       res.json({ data: categorys });
-      //
     } catch (err) {
       res.json({ msg: err }).status(500);
     }
@@ -36,7 +35,6 @@ module.exports = class categoryRoutes {
 
       //send data
       res.json({ data: category });
-      //
     } catch (err) {
       res.json({ msg: err }).status(500);
     }

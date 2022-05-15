@@ -1,21 +1,10 @@
 // imports
 const { Sequelize } = require("sequelize");
-const postgresql = require("./postgresql");
 
-let queryLog;
-const database = new Sequelize("Desafio_RestAPI_NodeJS", "root", "", {
-  host: "localhost",
+const database = new Sequelize("Desafio_RestAPI_NodeJS", "root", "", {  // your database connection info -> ("DATABASE_NAME", "USER", "PASSWORD")
+  host: "localhost",                                                    // host ip
   dialect: "mysql",
-  logging: (str) => {
-    queryLog = str.replace("Executing (default): ", "").replaceAll("`", '"');
-  },
-  hooks: {
-    // concat with postgresql
-    beforeFind: async (query) => {
-
-      console.log(queryLog);
-    },
-  },
+  logging: false,
 });
 
 module.exports = database;

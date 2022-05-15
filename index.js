@@ -1,7 +1,7 @@
 //external imports
 const express = require("express");
 const cors = require("cors");
-var cron = require("node-cron");
+const cron = require("node-cron");
 
 //database import
 const mysql = require("./database/mysql");
@@ -24,22 +24,19 @@ cron.schedule("0 2 * * *",
   }
 );
 
-//body config
+//body config for json response
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//cors
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-
-//configuration body
-app.use(express.json());
+//cors config
+app.use(cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200, methods: ['GET', 'PATCH', 'POST', 'DELETE'],}));
 
 //routes import
 const productRoutes = require("./routes/productsRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const stockRoutes = require("./routes/stockRoutes");
 
-//use routes
+//using routes
 app.use("/produtos", productRoutes);
 app.use("/categorias", categoryRoutes);
 app.use("/categorias", stockRoutes);

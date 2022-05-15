@@ -4,17 +4,18 @@ const postgre = require("../database/postgresql");
 
 const stockConfig = {
   quantity: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER, // -> 200 uni
   },
   reserved: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER, // -> 100 uni
   },
   status: {
-    type: DataTypes.SMALLINT,
-    defaultValue: 1,
+    type: DataTypes.SMALLINT, // -> 1/0 starting at 1
+    defaultValue: 1,          // starting at 1
   },
 };
 
+// postgre refences because hasOne and hasMany don't work
 const postgresConfig = {
   ProductId: {
     type: DataTypes.INTEGER,
@@ -22,7 +23,7 @@ const postgresConfig = {
       model: 'Products',
       key: 'id'
     },
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE'       // -> on delete cascade(delete everything related)
   }
 }
 

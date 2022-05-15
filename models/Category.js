@@ -4,16 +4,16 @@ const postgre = require("../database/postgresql");
 
 const categoryConfig = {
   code: {
-    type: DataTypes.STRING(15),
-    allowNull: false
+    type: DataTypes.STRING(15),   // -> new_tables
+    allowNull: false              // required
   },
   title: {
-    type: DataTypes.STRING(60),
-    allowNull: false
+    type: DataTypes.STRING(60),   // -> New and good tables
+    allowNull: false              // required
   },
   status: {
-    type: DataTypes.SMALLINT,
-    defaultValue: 1,
+    type: DataTypes.SMALLINT,     // -> 1/0 
+    defaultValue: 1,              // starting at 1
   },
 }
 

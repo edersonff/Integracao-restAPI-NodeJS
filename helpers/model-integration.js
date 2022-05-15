@@ -1,7 +1,21 @@
-const Models = [];
-Models["Stock"] = require("../models/Stock");
-Models["Product"] = require("../models/Product");
-Models["Category"] = require("../models/Category");
+/* 
+  -- Model integration --
+  Is a helper that export a class with
+  some and simple model functions.
+  
+  (contructor) -> getting and saving models.
+
+  (findOne) -> search the id in mysql with
+  the options. If it's null returns
+  postgreSQL model.
+
+  (findAll) -> search the id in the both
+  models with the options using concat.
+
+  (create) -> simple creation prioritizing 
+  mysql.
+*/
+
 module.exports = class modelIntegration {
   constructor(mysql, postgre) {
     //inicializate models
