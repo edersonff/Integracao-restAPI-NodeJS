@@ -50,20 +50,21 @@
 - Primeira vez ultilizando PostgreSQL
 - Diferentes formatações entre MySQL e PostgreSQL
 - Dificuldade para juntar end-points
+- Constantes erros de portas intalação do banco de dados PostgreSQL
 
 ### Destaques
 
 - Middleware customizado para cada endpoint
 - Agendamento para exportar dados (MySQL->PostgreSQL)
 - Arquivos separados para primeira inicialização (criar tabelas com `sync({force: true})`) e também exportação de possiveis dados.
-- Configuração para 
+- Helper customizado para fazer integração entre models
 
 ### Recursos
 
 - [x] Models
 - [x] Rotas
 - [x] Conexão com PostgreSQL e mysql
-- [ ] Integração postgresql e mysql
+- [X] Integração postgresql e mysql
 - [x] Intervalo para integração de dados
 
 ### Modulos ultilizadas
